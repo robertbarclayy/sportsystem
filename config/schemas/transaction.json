@@ -1,0 +1,40 @@
+{
+  "name": "transaction",
+  "humanName": "Manage Transaction",
+  "previewUrl": "",
+  "backboneForms": {
+    "schema": {
+
+      "name": { "type": "Text", "title": "TransactionID", "validators": ["required"] },
+      "products": { "type": "List", "itemType": "ObjectId", "title": "Products" },
+      "price": { "type": "Number", "title": "Total Price", "validators": ["required"] },
+      "date": { "type": "Date", "title": "Todays Date", "validators": ["required"], "editorAttrs": { "disabled": "disabled" }}
+    },
+    "fieldsets": [
+      {
+        "legend": "",
+        "fields": ["products","price", "date"]
+      }
+    ]
+  },
+  "relations": {
+    "products": {
+      "type": "HasMany",
+      "relatedCollection": "stock"
+    }
+  },
+  "toStringField": "name",
+  "updatedField": { "key": "updated", "type": "Date" },
+  "createdField": { "key": "created", "type": "Date" },
+  "fastSearch": {
+    "find": { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+    "sort": { "updated": -1 },
+    "limit": 10,
+    "columns": ["_id", "price", "date"]
+  },
+  "mongoose": {
+    "schema": null
+  },
+  "readonly": false,
+  "revisionable": true
+}

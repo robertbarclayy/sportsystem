@@ -1,0 +1,46 @@
+{
+  "name": "customer",
+  "humanName": "Customer",
+  "backboneForms": {
+    "schema": {
+      "name": { "type": "Text", "title": "Customer Name", "validators": ["required"]
+      },
+      "address": { "type": "CKEditor", "title": "Address","validators": ["required"]
+      },
+      "email": { "validators": [
+        "required",
+        "email"
+      ],
+        "type": "Text", "title": "Email" }
+    },
+    "fieldsets": [
+      {
+        "legend": "Customer Information",
+        "fields": ["name", "address", "email"]
+      }
+    ],
+    "defaults": {
+    }
+  },
+  "toStringField": "name",
+  "updatedField": { "key": "updated", "type": "Date" },
+  "createdField": { "key": "created", "type": "Date" },
+  "fastSearch": {
+    "find": { "$or": [
+      { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+      { "_id": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+      { "email": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } }
+    ] },
+    "sort": { "updated": -1 },
+    "limit": 10,
+    "columns": ["name", "_id", "address", "email"]
+  },
+  "relations": {
+
+  },
+  "mongoose": {
+    "schema": null
+  },
+  "readonly": false,
+  "revisionable": true
+}

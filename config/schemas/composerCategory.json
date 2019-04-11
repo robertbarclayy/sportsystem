@@ -1,0 +1,34 @@
+{
+	"name": "composerCategory",
+	"humanName": "Manage Transaction",
+	"previewUrl": "",
+	"backboneForms": {
+		"schema": {
+
+			"name": { "type": "Text", "title": "TransactionID", "validators": ["required"] },
+			"products": { "type": "List", "itemType": "ObjectId", "title": "Products" },
+			"price": { "type": "Number", "title": "Total Price", "validators": ["required"] },
+			"date": { "type": "Date", "title": "Todays Date", "validators": ["required"], "editorAttrs": { "disabled": "disabled" }}
+		}
+	},
+	"relations": {
+		"products": {
+			"type": "HasMany",
+			"relatedCollection": "composer"
+		}
+	},
+	"toStringField": "name",
+	"updatedField": { "key": "updated", "type": "Date" },
+	"createdField": { "key": "created", "type": "Date" },
+	"fastSearch": {
+		"find": { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+		"sort": { "updated": -1 },
+		"limit": 10,
+		"columns": ["_id","name", "price", "date"]
+	},
+	"mongoose": {
+		"schema": null
+	},
+	"readonly": false,
+	"revisionable": true
+}

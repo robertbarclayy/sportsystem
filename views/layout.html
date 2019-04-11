@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= global.config.project_name||'Mongorilla' %><%= title ? ' | ' + title : '' %></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+        <link href="/third-party/bootstrap/dist/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/backbone-forms/distribution/templates/bootstrap3.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/layout.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/bs-fancyfile/css/bootstrap-fancyfile.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/bootstrap-datepicker/css/datepicker3.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/alertify/themes/alertify.core.css" rel="stylesheet" />
+        <link href="/third-party/alertify-bootstrap-3/alertify.bootstrap3.css" rel="stylesheet" />
+        <link href="/third-party/ladda-bootstrap/dist/ladda-themeless.min.css" rel="stylesheet" />
+
+        <link href="/third-party/AdminLTE/dist/css/AdminLTE.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/AdminLTE/dist/css/skins/_all-skins.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/ionicons/css/ionicons.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/third-party/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    </head>
+    <body class="sidebar-mini skin-black">
+        <div class="wrapper">
+
+        <header class="main-header">
+            <a href="/" class="logo">
+                <span class="logo-mini"><strong>Sports Shop </strong>System</span>
+                <span class="logo-lg"><strong>Sports Shop </strong>System</span>
+            </a>
+
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!--a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a-->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <% if (sessionUser) { %>
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span><%= sessionUser.fullname %> <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-light-blue">
+                                    <img src="<%= sessionUser.photo_url %>" class="img-circle" alt="User Image" />
+                                    <p>
+                                        <%= sessionUser.fullname %> - <%= sessionUser.roles.join(', ') %> 
+                                        <small>Member since <%= sessionUser.created ? (new Date(sessionUser.created)).toLocaleDateString() : 'the beginning' %></small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/user/<%= sessionUser.username %>" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/auth/logout" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <% if (sessionUser) { %>
+        <aside class="left-side sidebar-offcanvas">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="<%= sessionUser.photo_url %>" class="img-circle" alt="User Image" />
+                    </div>
+                    <div class="pull-left info">
+                        <p>Hello, <%= sessionUser.fullname  %></p>
+
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                        <span class="input-group-btn">
+                            <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="/dashboard">
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-wrench"></i>
+                            <span>Manage Staff</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'mongorillaUser' }), 'crud')) { %>
+                            <li><a href="/search/mongorillaUser"><i class="fa fa-user"></i> Edit Staff</a></li>
+                            <% } %>
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'mongorillaCollection' }), 'crud')) { %>
+                            <li><a href="/search/mongorillaCollection"><i class="fa fa-th"></i> Manage Content Types</a></li>
+                            <% } %>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-plus"></i>
+                            <span>Reports</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+
+                        </a>
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'report' }), 'crud')) { %>
+                            <li><a href="/add/report"><i class="fa fa-plus"></i>Generate Report</a></li>
+                            <% } %>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-plus"></i>
+                            <span>Manage Stock</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'stock' }), 'ru')) { %>
+                            <li><a href="/search/stock"><i class="fa fa-plus"></i> Manage Stocks</a></li>
+                            <% } %>
+                        </ul>
+
+
+
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-plus"></i>
+                            <span>Manage customers</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'customer' }), 'crud')) { %>
+                            <li><a href="/search/customer"><i class="fa fa-user"></i> Manage Customers</a></li>
+                            <% } %>
+                        </ul>
+
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-plus"></i>
+                            <span>Manage Sales</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'transaction' }), 'crud')) { %>
+                            <li><a href="/add/transaction"><i class="fa fa-plus-circle"></i> Create Transaction</a></li>
+                            <% } %>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <% if (sessionUser.hasPermissions(_(collections).findWhere({ name: 'return' }), 'crud')) { %>
+                            <li><a href="/add/return"><i class="fa fa-plus-circle"></i> Return Form</a></li>
+                            <% } %>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <% } %>
+
+        <aside class="right-side">
+            <% if (sessionUser) { %>
+            <section class="content-header">
+                <h1>
+                    <%= title %>
+                    <small><%= (typeof subtitle !== 'undefined') ? subtitle : '' %></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                    <li class="active"><%= title %></li>
+                </ol>
+            </section>
+            <% } %>
+
+            <div id="main-container" class="content">
+            <%= body %>
+            </div>
+        </aside>
+
+        <footer class="main-footer">
+            <div class="container">
+
+
+            </div>
+        </footer>
+
+        </div>
+
+
+        <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyC_WOTGFf-Am_u1tkNeaWx5fM5YJmFXa6c",
+                authDomain: "sports-shop-system.firebaseapp.com",
+                databaseURL: "https://sports-shop-system.firebaseio.com",
+                projectId: "sports-shop-system",
+                storageBucket: "sports-shop-system.appspot.com",
+                messagingSenderId: "257785473732"
+            };
+            firebase.initializeApp(config);
+        </script>
+
+        <script src="/third-party/requirejs/require.js" data-main="/init<%= frontendBuilt ? '-build.js' : '' %>" ></script>
+
+    </body>
+</html>

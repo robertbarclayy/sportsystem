@@ -1,0 +1,74 @@
+{
+  "name": "stock",
+  "humanName": "Manage Stock",
+  "previewURL": "http://example.com/search/stock",
+  "backboneForms": {
+    "schema": {
+      "name": { "type": "Text", "title": "Product name", "validators": ["required"]
+
+      ,"editorAttrs": { "disabled": "disabled" } },
+      "id": { "type": "Text", "title": "stock ID", "validators": ["required"]
+      ,"editorAttrs": { "disabled": "disabled" } },
+      "stock_amount": { "type": "Number", , "title": "Stock Quantity",
+
+
+
+        "validators": [
+          "required"
+        ]
+      },
+      "price": { "type": "Number", "title": "Price","validators": ["required"]
+      ,"editorAttrs": { "disabled": "disabled" }},
+
+      "category": { "type": "Text", "title": "Category", "validators": ["required"]
+      ,"editorAttrs": { "disabled": "disabled" }},
+
+      "images": { "type": "List", "itemType": "Text", "title": "Image (URL)", "validators": ["url"]
+      ,"editorAttrs": { "disabled": "disabled" } }
+    },
+    "fieldsets": [
+      {
+        "legend": "Basic Information",
+        "fields": ["name", "id", "price", "stock_amount", "category", "images"]
+      }
+    ],
+    "defaults": {
+      "stock_amount": 0
+    }
+  },
+  "toStringField": "name",
+  "updatedField": { "key": "updated", "type": "Date" },
+  "createdField": { "key": "created", "type": "Date" },
+  "fastSearch": {
+    "find": {
+      "$or": [
+        { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+        { "id": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+        { "category": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } }
+      ]
+    },
+
+    "sort": { "updated": -1 },
+    "limit": 10,
+    "columns": ["name", "id", "price", "category", "stock_amount"]
+  },
+  "relations": {
+    "categories": {
+      "type": "HasMany",
+      "relatedCollection": "composerCategory"
+    },
+    "periods": {
+      "type": "HasMany",
+      "relatedCollection": "period"
+    },
+    "opuses": {
+      "type": "HasMany",
+      "relatedCollection": "opus"
+    }
+  },
+  "mongoose": {
+    "schema": null
+  },
+  "readonly": false,
+  "revisionable": true
+}

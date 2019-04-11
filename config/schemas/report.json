@@ -1,0 +1,36 @@
+{
+  "name": "report",
+  "humanName": "Report",
+  "previewUrl": "",
+  "backboneForms": {
+    "schema": {
+
+    },
+    "fieldsets": [
+      {
+        "legend": "",
+        "fields": [""]
+      }
+    ]
+  },
+  "relations": {
+    "products": {
+      "type": "HasMany",
+      "relatedCollection": "stock"
+    }
+  },
+  "toStringField": "name",
+  "updatedField": { "key": "updated", "type": "Date" },
+  "createdField": { "key": "created", "type": "Date" },
+  "fastSearch": {
+    "find": { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+    "sort": { "updated": -1 },
+    "limit": 10,
+    "columns": ["_id"]
+  },
+  "mongoose": {
+    "schema": null
+  },
+  "readonly": false,
+  "revisionable": true
+}

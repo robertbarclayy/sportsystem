@@ -1,0 +1,32 @@
+{
+	"name": "instrument",
+	"humanName": "Manage returns",
+	"previewUrl": "",
+	"backboneForms": {
+		"schema": {
+			"id": { "type": "Text", "title": "TransactionID", "validators": ["required"] },
+			"composer": { "type": "List", "itemType": "ObjectId", "title": "Products" },
+			"price": { "type": "Number", "title": "Total Price", "validators": ["required"] }
+		}
+	},
+	"relations": {
+		"composer": {
+			"type": "HasMany",
+			"relatedCollection": "composerCategory"
+		}
+	},
+	"toStringField": "name",
+	"updatedField": { "key": "updated", "type": "Date" },
+	"createdField": { "key": "created", "type": "Date" },
+	"fastSearch": {
+		"find": { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+		"sort": { "updated": -1 },
+		"limit": 10,
+		"columns": ["name", "uri", "count", "created", "updated"]
+	},
+	"mongoose": {
+		"schema": null
+	},
+	"readonly": false,
+	"revisionable": true
+}

@@ -1,0 +1,54 @@
+{
+	"name": "score",
+	"humanName": "Score",
+	"previewUrl": "http://damusiq.com/${composer.uri}/${opus.uri}/${_id}.html",
+	"backboneForms": {
+		"schema": {
+			"name": { "type": "Text", "title": "Name", "validators": ["required"] },
+			"description": { "type": "CKEditor" },
+			"uri": {
+				"type": "Text",
+				"validators": [
+					"required",
+					{
+						"type": "regexp",
+						"regexp": { "__constructor": "RegExp", "__arguments": ["^[0-9a-z-]{2,}[0-9a-z]$"] }
+					}
+				], 
+				"editorAttrs": { "disabled": "disabled" }
+			},
+			"composer": { "type": "ObjectId", "title": "Composer" },
+			"opus": { "type": "ObjectId", "title": "Opus" },
+			"instruments": { "type": "List", "itemType": "ObjectId", "title": "Instruments" },
+			"order_index": { "type": "Text", "title": "Sort String", "editorAttrs": { "disabled": "disabled" } }
+		}
+	},
+	"relations": {
+		"composer": {
+			"type": "HasOne",
+			"relatedCollection": "composer"
+		},
+		"opus": {
+			"type": "HasOne",
+			"relatedCollection": "opus"
+		},
+		"instruments": {
+			"type": "HasMany",
+			"relatedCollection": "instrument"
+		}
+	},
+	"toStringField": "name",
+	"updatedField": { "key": "updated", "type": "Date" },
+	"createdField": { "key": "created", "type": "Date" },
+	"fastSearch": {
+		"find": { "name": { "__constructor": "RegExp", "__arguments": ["(^|\\W*)${q}", "ig"] } },
+		"sort": { "updated": -1 },
+		"limit": 10,
+		"columns": ["name", "uri", "created", "updated"]
+	},
+	"mongoose": {
+		"schema": null
+	},
+	"readonly": false,
+	"revisionable": true
+}

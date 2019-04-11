@@ -1,0 +1,62 @@
+{
+    "s3": {
+        "bucket": "mongorilla"
+    },
+    "project_name": "Mongorilla CMS",
+    "roles": [
+        {
+            "name": "admin",
+            "permissions": {
+                "transaction": "crud",
+                "customer": "crud",
+                "report": "crud",
+                "stock": "ru",
+                "return": "crud",
+                "mongorillaUser": "crud",
+                "mongorillaRole": "r"
+            }
+        },
+        {
+            "name": "retail_assistant",
+            "permissions": {
+                "transaction": "crud",
+                "customer": "r",
+                "stock": "r",
+                "report": "r",
+                "return": "crud",
+                "mongorillaUser": "r",
+                "mongorillaRole": "r"
+            }
+        },
+        {
+            "name": "branch_manager",
+            "permissions": {
+                "transaction": "crud",
+                "customer": "crud",
+                "stock": "ru",
+                "report": "crud",
+                "return": "crud",
+                "mongorillaUser": "r",
+                "mongorillaRole": "r"
+            }
+        },
+        {
+            "name": "stock_manager",
+            "permissions": {
+                "transaction": "crud",
+                "customer": "crud",
+                "stock": "ru",
+                "report": "r",
+                "return": "crud",
+                "mongorillaUser": "crud",
+                "mongorillaRole": "r"
+            }
+        }
+    ],
+    "users": [
+        { "username": "retail", "password": "password", "fullname": "Retail Assistant", "roles": ["retail_assistant"] },
+        { "username": "stock", "password": "password", "fullname": "Stock Manager", "roles": ["stock_manager"] },
+        { "username": "branch", "password": "password", "fullname": "Branch Manager", "roles": ["branch_manager"] }
+    ],
+    "collections": []
+}
